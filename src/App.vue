@@ -10,7 +10,7 @@ export default{
     <TheNavigation/>
   </div>
   <div class="container">
-    <RouterView v-slot="{Component}">
+    <RouterView v-slot="{ Component }">
       <transition name="moveUp">
         <component :is="Component" :key="$router.path"></component>
       </transition>
