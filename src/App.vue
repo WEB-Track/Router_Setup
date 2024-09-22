@@ -10,28 +10,21 @@ export default{
     <TheNavigation/>
   </div>
   <div class="container">
-    <RouterView v-slot="{ Component }">
-      <transition name="moveUp">
-        <component :is="Component" :key="$router.path"></component>
+    <RouterView v-slot="{ Component, }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" :key="$route.path"></component>
       </transition>
     </RouterView>
   </div>
 </template>
 
   <style lang="css">
-    .moveUp-enter-active{
-      animation: fadeIn 1s ease-in;
+      .fade-enter-active,
+      .fade-leave-active{
+      transition: opacity 0.4s;
     }  
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-    .moveUp-leave-active {
-      animation: moveUp 0.4s ease-in;
-    }
-    @keyframes moveUp {
-      0% {transform: translateY(0);}
-      100% {transform: translateY(-400px);}
+    .fade-enter,
+    .fade-leave-to {
+      opacity: 0;
     }
   </style>
