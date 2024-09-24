@@ -12,9 +12,15 @@ const routes = [
   props: route => ({ ...route.params, id: parseInt(route.params.id) }),
   beforeEnter(to, from) {
    const exists = sourceData.destinations.find(
-    destination => destination.id === parseInt(to.params.id),
+    destination => destination.id === parseInt(to.params.id)
    )
-   if (!exists) return { name: 'NotFound' }
+   if (!exists) return {
+    name: 'NotFound',
+    // allows keeping the URL while rendering a different page
+    params: { pathMatch: to.path.split('/').slice(1) },
+    query: to.query,
+    hash: to.hash,
+   }
   },
   children: [
    {
@@ -27,7 +33,7 @@ const routes = [
  },
  {
   path: '/:pathMatch(.*)*',
-  name: 'notFound',
+  name: 'NotFound',
   component: () => import('@/views/NotFound.vue')
  }
 ]
@@ -35,6 +41,12 @@ const routes = [
 const router = createRouter({
  history: createWebHistory(),
  routes,
- linkActiveClass: 'vue-school-active-link'
+ // this is the active links control fot the color. **below**
+ linkActiveClass: 'vue-school-active-link',
+ scrollBehavior(to, from, savedPosition) {
+  return savedPosition || new Promise((resolve) => {
+   setTimeout(() => resolve({ top: 0, behavior: 'smooth' }), 300)
+  })
+ }
 })
 export default router
